@@ -1,6 +1,6 @@
-const debug = debug();
+const debug = require("debug");
 class Namespace {
-  constructor(namespace_name, parent_namespace) {
+  constructor(namespace_name, parent_namespace = null) {
     this.namespace_name = namespace_name;
     this.parent_namespace = parent_namespace;
   }
@@ -11,10 +11,13 @@ class Namespace {
 
   getName() {
     if (this.parent_namespace)
-      return `${this.namespace_name}:${this.parent_namespace.getName()}`;
+      return `${this.parent_namespace.getName()}:${this.namespace_name}`;
     return this.namespace_name;
   }
 
+  space(space_name) {
+    return new Namespace(space_name, this);
+  }
   error() {
     return new Namespace("err", this);
   }
@@ -34,3 +37,7 @@ class Namespace {
     return this.warning();
   }
 }
+
+module.exports = Namespace;
+
+module.exports = { namespace: Namespace.default() };
