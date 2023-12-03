@@ -5,6 +5,10 @@ const express = require("express");
 const connect = require("./databaseConnect");
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
+const flash = require("express-flash");
+const { strategize } = require("./auth/auth");
+const passport = require("passport");
+const session = require("express-session");
 
 connect();
 
@@ -13,34 +17,29 @@ const app = express();
 app.set("view-engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
 
-app.get("/", (req, res) => {
-  namespace.log("GET /");
-  return res.render("index.ejs", { name: "Perez" });
-});
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "secret",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
-app.get("/login", (req, res) => {
-  return res.render("login.ejs");
-});
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+strategize(passport);
 
-app.get("/register", (req, res) => {
-  return res.render("register.ejs");
-});
-
-app.post("/register", (req, res) => {
-  const log = namespace.space("POST /register");
-  const { name, email, password } = req.body;
-
-  log.log("register");
-  log.log("username", name, "email", email, "password", password);
-});
-
-app.post("/login", (req, res) => {
-  const log = namespace.space("POST /login");
-  const { name, email, password } = req.body;
-
-  log.log("login");
-  log.log("username", name, "email", email, "password", password);
-});
+app.post(
+  "/login",
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/login",
+    failureFlash: true,
+  })
+);
+app.use("/", require("./routes/userRoutes"));
+app.use("/", require("./routes/serverRoutes"));
 
 app.listen(process.env.PORT || 3000, () => {
   namespace.log("Listening on port ", process.env.PORT || 3000);
