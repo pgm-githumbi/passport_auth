@@ -25,7 +25,7 @@ class Namespace {
     return new Namespace("warn", this);
   }
   log(...args) {
-    debug(this.getName())(args);
+    debug(this.getName())(...args);
     return this;
   }
   logErr(...args) {
