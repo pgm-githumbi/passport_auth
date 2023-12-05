@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Root Document</h1>
+    <h2>Logged in as <%= name %></h2>
+    <h2>Email: <%= email %></h2>
+    <h3><%= message %></h3>
+    <form action="/logout?_method=DELETE" method="post">
+      <button type="submit">Logout</button>
+    </form>
+  </body>
+</html>
