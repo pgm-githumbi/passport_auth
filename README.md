@@ -31,6 +31,7 @@ Create your ```.env``` file in the project root directory and set your connectio
 Set optional environment variables
 ```DEBUG=app*```
 ```PORT=3000```
+```SESSION_SECRET="mysupersecretsesh"```
 
 Run the project using the ```dev``` script like so.
 ```npm run dev```
