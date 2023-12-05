@@ -1,5 +1,6 @@
 # passport_auth
-Node express api that authenticates the user using passport. 
+Node express api that authenticates the user using passport and stores your authentication
+status in a session SID as a cookie in the browser.
 
 The user cannot access any routes in the application beforehand and is always redirected to /login route.
 If the user has no account yet, they can click a link to the register page to create a new account.
