@@ -51,4 +51,18 @@ const register = asyncHandler(async (req, res) => {
   log.logErr("Failed to create user");
   return res.redirect("/register");
 });
-module.exports = { getLogin, getRegister, register, login };
+
+// @route DELETE /logout
+// protected
+const logOut = asyncHandler(async (req, res) => {
+  const space = namespace.space("DELETE /logout");
+  req.logOut((err, result) => {
+    if (err) {
+      space.logErr("Error occurred while loggging out");
+      throw err;
+    }
+    space.log("logging out successful");
+    return res.redirect("/login");
+  });
+});
+module.exports = { getLogin, getRegister, register, logOut };
